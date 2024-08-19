@@ -1,10 +1,14 @@
-package me.pauloo27.common.election;
+package me.pauloo27.server.election;
 
 import java.util.LinkedHashMap;
+import java.util.Map;
 
+import me.pauloo27.common.election.Candidate;
+import me.pauloo27.common.election.ElectionState;
+import me.pauloo27.common.election.IElection;
 import me.pauloo27.common.utils.AppException;
 
-public class Election {
+public class Election implements IElection {
     private LinkedHashMap<Candidate, Integer> candidates;
     private ElectionState state;
 
@@ -39,10 +43,18 @@ public class Election {
         return new LinkedHashMap<>(this.candidates);
     }
 
-    public enum ElectionState {
-        PRE_ELECTION,
-        ACTIVE,
-        COUTING_VOTES,
-        COMPLETED,
+    @Override
+    public Map<Candidate, Integer> listCandidates() {
+        return this.getCandidates();
+    }
+
+    @Override
+    public void syncNodeVotes(Map<Candidate, Integer> candidateVotes) {
+        throw new UnsupportedOperationException("Unimplemented method 'syncNodeVotes'");
+    }
+
+    @Override
+    public ElectionState getElectionState() {
+        return this.state;
     }
 }

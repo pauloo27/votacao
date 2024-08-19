@@ -7,7 +7,7 @@ import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
 import me.pauloo27.common.election.Candidate;
-import me.pauloo27.common.election.Election;
+import me.pauloo27.server.election.Election;
 import me.pauloo27.common.utils.AppException;
 import me.pauloo27.common.view.WinBase;
 
@@ -80,6 +80,12 @@ public class WinStart extends WinBase {
     }
 
     public void handleStartElection() {
+        var confirmation = JOptionPane.showConfirmDialog(this,
+                "Não será possível adicionar mais candidatos após iniciar a eleição. Deseja continuar?");
+        if (confirmation != JOptionPane.YES_OPTION) {
+            return;
+        }
+
         this.election.startElection();
         this.btnNewCandidate.setEnabled(false);
         this.btnStart.setEnabled(false);

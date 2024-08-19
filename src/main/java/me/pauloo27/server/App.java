@@ -1,6 +1,6 @@
 package me.pauloo27.server;
 
-import me.pauloo27.common.election.Election;
+import me.pauloo27.server.election.Election;
 import me.pauloo27.server.view.scenes.WinStart;
 
 public class App {
