@@ -11,7 +11,7 @@ import me.pauloo27.server.election.Election;
 import me.pauloo27.common.utils.AppException;
 import me.pauloo27.common.view.WinBase;
 
-public class WinStart extends WinBase {
+public class WinServer extends WinBase {
     private Election election;
 
     private JTable table;
@@ -19,7 +19,7 @@ public class WinStart extends WinBase {
     private JButton btnStart;
     private JButton btnEnd;
 
-    public WinStart(Election election) {
+    public WinServer(Election election) {
         super("Servidor - Início", 800, 500);
         this.election = election;
     }
@@ -27,7 +27,7 @@ public class WinStart extends WinBase {
     public void setupComponents() {
         super.setupComponents();
 
-        String[] columns = { "Nome do Canditado", "Número do Candidato", "Votos" };
+        String[] columns = { "Nome do Candidato", "Número do Candidato", "Votos" };
         this.table = new JTable(new DefaultTableModel(new Object[][] {}, columns));
         this.table.setEnabled(false);
 

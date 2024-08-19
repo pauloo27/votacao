@@ -1,6 +1,10 @@
 package me.pauloo27.common.election;
 
-public class Candidate {
+import java.io.Serializable;
+
+public class Candidate implements Serializable {
+        private static final long serialVersionUID = 1L;
+
     private String name;
     private int number;
 

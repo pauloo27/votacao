@@ -6,12 +6,12 @@ import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 
 import me.pauloo27.server.election.Election;
-import me.pauloo27.server.view.scenes.WinStart;
+import me.pauloo27.server.view.scenes.WinServer;
 
 public class App {
     public static void main(String[] args) throws RemoteException, MalformedURLException {
         var election = new Election();
-        var register = new WinStart(election);
+        var register = new WinServer(election);
         register.setVisible(true);
         startRMI(election);
     }
