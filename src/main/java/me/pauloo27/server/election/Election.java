@@ -1,18 +1,20 @@
 package me.pauloo27.server.election;
 
+import java.rmi.RemoteException;
+import java.rmi.server.UnicastRemoteObject;
 import java.util.LinkedHashMap;
-import java.util.Map;
+import java.util.List;
 
 import me.pauloo27.common.election.Candidate;
 import me.pauloo27.common.election.ElectionState;
 import me.pauloo27.common.election.IElection;
 import me.pauloo27.common.utils.AppException;
 
-public class Election implements IElection {
+public class Election extends UnicastRemoteObject implements IElection {
     private LinkedHashMap<Candidate, Integer> candidates;
     private ElectionState state;
 
-    public Election() {
+    public Election() throws RemoteException {
         this.candidates = new LinkedHashMap<>();
         this.state = ElectionState.PRE_ELECTION;
     }
@@ -44,17 +46,12 @@ public class Election implements IElection {
     }
 
     @Override
-    public Map<Candidate, Integer> listCandidates() {
-        return this.getCandidates();
-    }
-
-    @Override
-    public void syncNodeVotes(Map<Candidate, Integer> candidateVotes) {
-        throw new UnsupportedOperationException("Unimplemented method 'syncNodeVotes'");
-    }
-
-    @Override
     public ElectionState getElectionState() {
         return this.state;
+    }
+
+    @Override
+    public List<Candidate> listCandidates() throws RemoteException {
+        return this.candidates.keySet().stream().toList();
     }
 }

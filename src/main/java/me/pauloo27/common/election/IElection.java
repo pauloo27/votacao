@@ -1,11 +1,14 @@
 package me.pauloo27.common.election;
 
-import java.util.Map;
+import java.rmi.Remote;
+import java.rmi.RemoteException;
+import java.util.List;
 
-public interface IElection {
-    Map<Candidate, Integer> listCandidates();
+public interface IElection extends Remote {
+    public List<Candidate> listCandidates() throws RemoteException;
 
-    void syncNodeVotes(Map<Candidate, Integer> candidateVotes);
+    // public void syncNodeVotes(Map<Candidate, Integer> candidateVotes) throws
+    // RemoteException;
 
-    ElectionState getElectionState();
+    public ElectionState getElectionState() throws RemoteException;
 }
