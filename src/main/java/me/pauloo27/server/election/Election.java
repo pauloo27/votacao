@@ -24,13 +24,15 @@ public class Election extends UnicastRemoteObject implements IElection {
             throw new AppException("Erro", "Só é possível cadastrar candidatos antes da eleição");
         }
 
-        this.candidates.entrySet().stream()
-                .filter(c -> c.getKey().getNumber() == candidate.getNumber()).findFirst()
-                .ifPresentOrElse(c -> {
-                    throw new AppException("Error", "Já existe um candidato com esse número");
-                }, () -> {
-                    this.candidates.put(candidate, 0);
-                });
+        synchronized (this.candidates) {
+            this.candidates.entrySet().stream()
+                    .filter(c -> c.getKey().getNumber() == candidate.getNumber()).findFirst()
+                    .ifPresentOrElse(c -> {
+                        throw new AppException("Error", "Já existe um candidato com esse número");
+                    }, () -> {
+                        this.candidates.put(candidate, 0);
+                    });
+        }
     }
 
     public void startElection() throws AppException {
@@ -41,8 +43,18 @@ public class Election extends UnicastRemoteObject implements IElection {
         this.state = ElectionState.ACTIVE;
     }
 
+    public void endElection() throws AppException {
+        if (this.state != ElectionState.ACTIVE) {
+            throw new AppException("Erro", "Eleição já foi encerrada");
+        }
+
+        this.state = ElectionState.COMPLETED;
+    }
+
     public LinkedHashMap<Candidate, Integer> getCandidates() {
-        return new LinkedHashMap<>(this.candidates);
+        synchronized (this.candidates) {
+            return new LinkedHashMap<>(this.candidates);
+        }
     }
 
     @Override
@@ -52,6 +64,25 @@ public class Election extends UnicastRemoteObject implements IElection {
 
     @Override
     public List<Candidate> listCandidates() throws RemoteException {
-        return this.candidates.keySet().stream().toList();
+        synchronized (this.candidates) {
+            return this.candidates.keySet().stream().toList();
+        }
+    }
+
+    @Override
+    public void vote(int number) throws RemoteException, AppException {
+        if (this.state != ElectionState.ACTIVE) {
+            throw new AppException("Erro", "Só é possível votar durante a eleição");
+        }
+
+        synchronized (this.candidates) {
+            this.candidates.entrySet().stream()
+                    .filter(c -> c.getKey().getNumber() == number).findFirst()
+                    .ifPresentOrElse(c -> {
+                        this.candidates.put(c.getKey(), c.getValue() + 1);
+                    }, () -> {
+                        throw new AppException("Erro", "Candidato não encontrado");
+                    });
+        }
     }
 }

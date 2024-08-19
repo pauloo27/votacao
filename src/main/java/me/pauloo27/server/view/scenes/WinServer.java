@@ -1,9 +1,11 @@
 package me.pauloo27.server.view.scenes;
 
 import javax.swing.JButton;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.SwingUtilities;
 import javax.swing.table.DefaultTableModel;
 
 import me.pauloo27.common.election.Candidate;
@@ -18,10 +20,12 @@ public class WinServer extends WinBase {
     private JButton btnNewCandidate;
     private JButton btnStart;
     private JButton btnEnd;
+    private JLabel lblStatus;
 
     public WinServer(Election election) {
         super("Servidor - Início", 800, 500);
         this.election = election;
+        this.startRefreshTimer();
     }
 
     public void setupComponents() {
@@ -31,9 +35,12 @@ public class WinServer extends WinBase {
         this.table = new JTable(new DefaultTableModel(new Object[][] {}, columns));
         this.table.setEnabled(false);
 
+        this.lblStatus = new JLabel("Cadastre os candidatos e inicie a eleição.");
+        this.addAt(lblStatus, 10, 50, 600, 20);
+
         var scroll = new JScrollPane(table, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
                 JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-        this.addAt(scroll, 10, 50, 600, 300);
+        this.addAt(scroll, 10, 70, 600, 300);
 
         this.btnNewCandidate = new JButton("Cadastrar Canditado");
         this.btnStart = new JButton("Iniciar Eleição");
@@ -50,7 +57,7 @@ public class WinServer extends WinBase {
                 JOptionPane.showMessageDialog(this,
                         ex.getMessage(),
                         ex.getTitle(),
-                        JOptionPane.INFORMATION_MESSAGE);
+                        JOptionPane.ERROR_MESSAGE);
             }
         });
 
@@ -59,9 +66,12 @@ public class WinServer extends WinBase {
         });
 
         btnEnd.setEnabled(false);
+        btnEnd.addActionListener(event -> {
+            this.handleEndElection();
+        });
     }
 
-    public void handleAddCandidate() {
+    private void handleAddCandidate() {
         var name = JOptionPane.showInputDialog("Digite o nome do candidato");
         int number;
 
@@ -79,7 +89,7 @@ public class WinServer extends WinBase {
         this.refreshTable();
     }
 
-    public void handleStartElection() {
+    private void handleStartElection() {
         var confirmation = JOptionPane.showConfirmDialog(this,
                 "Não será possível adicionar mais candidatos após iniciar a eleição. Deseja continuar?");
         if (confirmation != JOptionPane.YES_OPTION) {
@@ -90,14 +100,35 @@ public class WinServer extends WinBase {
         this.btnNewCandidate.setEnabled(false);
         this.btnStart.setEnabled(false);
         this.btnEnd.setEnabled(true);
+        this.lblStatus.setText("Eleição em andamento. Os votos são atualizados a cada 5 segundos.");
         this.refreshTable();
     }
 
-    public void refreshTable() {
+    private void handleEndElection() {
+        this.election.endElection();
+        this.btnEnd.setEnabled(false);
+        this.lblStatus.setText("Eleição encerrada. Resultado final:");
+        this.refreshTable();
+    }
+
+    private void refreshTable() {
         var model = (DefaultTableModel) this.table.getModel();
         model.setRowCount(0);
         this.election.getCandidates().forEach((candidate, votes) -> {
             model.addRow(new Object[] { candidate.getName(), candidate.getNumber(), votes });
         });
+    }
+
+    private void startRefreshTimer() {
+        new Thread(() -> {
+            while (true) {
+                try {
+                    Thread.sleep(5000);
+                    SwingUtilities.invokeLater(() -> this.refreshTable());
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
     }
 }

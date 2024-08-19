@@ -8,4 +8,6 @@ public interface IElection extends Remote {
     public List<Candidate> listCandidates() throws RemoteException;
 
     public ElectionState getElectionState() throws RemoteException;
+
+    public void vote(int number) throws RemoteException;
 }
