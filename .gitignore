@@ -1,0 +1,48 @@
+# Eclipse stuff
+.classpath
+.project
+.settings/
+
+# NetBeans
+nbproject/
+nbactions.xml
+
+# Ant
+build.xml
+
+# Maven
+target/
+dependency-reduced-pom.xml
+
+# VIM
+.*.sw[a-p]
+
+# various other potential build files
+build/
+bin/
+dist/
+manifest.mf
+
+# Mac filesystem dust
+.DS_Store/
+
+# IntelliJ
+*.iml
+*.ipr
+*.iws
+.idea/
+
+# M$ Code
+.vscode
+
+# Wiki
+*.wiki
+
+# trash
+*.hidden
+
+# docker
+data/
+
+# settings
+db.properties
