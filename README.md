@@ -6,6 +6,38 @@ cliente é responsável por enviar votos e receber informações sobre os candid
 
 O projeto foi feito para matéria de Sistemas Distribuídos.
 
+## Executando o projeto
+
+É requerido que o Java 21 e o Maven esteja instalado na máquina.
+
+Para construir os `.jar`, use o seguinte comando:
+
+`mvn clean install`
+
+Isso irá gerar os `.jar` na pasta `target/`. O `jar` do servidor se encontrará
+em `target/votacao-1.0-SNAPSHOT-server.jar` e do cliente em `target/votacao-1.0-SNAPSHOT-client.jar`.
+
+### Servidor
+
+Para iniciar o servidor, execute:
+
+`java -jar target/votacao-1.0-SNAPSHOT-server.jar`
+
+Com isso, a tela do Java Swing irá abrir. É necessário cadastrar os candidatos
+e iniciar a eleição (através do botão na interface) antes de iniciar o cliente.
+
+### Cliente
+
+Para iniciar o cliente, execute:
+
+`java -jar target/votocao-1.0-SNAPSHOT-client.jar`
+
+> [!IMPORTANT]  
+> O cliente só pode ser iniciado após o servidor ter iniciado a eleição.
+
+Com isso, a tela do Java Swing irá abrir. Por lá, será possível votar nos 
+candidatos.
+
 ## Uso
 
 É necessário iniciar primeiro o servidor. Por lá, serão cadastrados os candidatos.
@@ -28,27 +60,6 @@ E o servidor mostrará o resultado final da eleição.
 
 ![Tela do Servidor](./screenshots/server-02.png)
 
-## Executando o projeto
-
-É requerido que o Java 21 e o Maven esteja instalado na máquina.
-
-### Servidor
-
-Rode o seguinte comando:
-
-`mvn clean compile exec:java -Dexec.mainClass="me.pauloo27.server.App"`
-
-Com isso, a tela do Java Swing irá abrir. É necessário cadastrar os candidatos
-e iniciar a eleição (através do botão na interface) antes de iniciar o cliente.
-
-### Cliente
-
-Rode o seguinte comando:
-
-`mvn clean compile exec:java -Dexec.mainClass="me.pauloo27.client.App"`
-
-Com isso, a tela do Java Swing irá abrir. Por lá, será possível votar nos 
-candidatos.
 
 ## Licença
 
