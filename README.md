@@ -2,13 +2,13 @@
 
 O código contém um servidor e um cliente que se comunicam através de RMI. O 
 servidor é responsável por armazenar os candidatos e os votos, enquanto o
-cliente é responsável por enviar votos e receber informações sobre os candidatos.
+cliente recebe informações sobre os candidatos e envia votos.
 
 O projeto foi feito para matéria de Sistemas Distribuídos.
 
 ## Executando o projeto
 
-É requerido que o Java 21 e o Maven esteja instalado na máquina.
+É requerido que o Java 21 e o Maven estejam instalados na máquina.
 
 Para construir os `.jar`, use o seguinte comando:
 
@@ -41,7 +41,7 @@ candidatos.
 ## Uso
 
 É necessário iniciar primeiro o servidor. Por lá, serão cadastrados os candidatos.
-Após todos os canditados serem cadastrados, é necessário "Iniciar Eleição", por meio
+Após todos os candidatos serem cadastrados, é necessário "Iniciar Eleição", por meio
 do botão na interface.
 
 ![Tela do Servidor](./screenshots/server-01.png)
@@ -54,9 +54,8 @@ irão buscar a lista de candidatos do servidor e permitirão votar nos mesmos.
 O servidor atualiza a cada 5 segundos a quantidade de votos de cada candidato.
 
 Ao final do período de votação, é possível encerrar a eleição por meio da interface
-do servidor. Após encerrar a eleição, os clientes não poderão mais votar.
-
-E o servidor mostrará o resultado final da eleição.
+do servidor. Após encerrar a eleição, os clientes não poderão mais votar e o servidor 
+mostrará o resultado final da eleição.
 
 ![Tela do Servidor](./screenshots/server-02.png)
 
